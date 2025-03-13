@@ -1,0 +1,110 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       Template para las mesas         %
+%               13-03-25                %
+%   Edicson Solar Salinas (lavapatos)   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\PassOptionsToPackage{dvipsnames,tikz,tzplot}{xcolor} % autismo de colores
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%           FORMATEO            %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage[headheight=2cm,left=1.5cm,right=1.5cm,top=3.15cm]{geometry} % márgenes
+\usepackage{times}                      % fuente
+\usepackage{ragged2e}                   % justificar de forma rara
+\usepackage{fancyhdr}                   % para header y footer
+\usepackage{lipsum}                     % generar bla blas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       MATEMÁTICAS         %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amsmath}                    % ecuaciones y aligns
+\usepackage{amssymb}                    % símbolos para raritos matemáticos
+\usepackage{blkarray}                   % matrices con palabras en los bordes
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%       GRÁFICOS Y DIBUJOS      %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx}                   % para el bello logo del caea
+\usepackage{pgfplots}                   % para gráficos
+\pgfplotsset{compat=1.18, width=12cm}   % compatibilidad y ancho
+\usepackage{tikz}                       % dibujos a puro vectorazo
+\usepackage{tzplot}                     % extensión de tikz
+\usepackage{tkz-euclide}                % más extensión de tikz
+\usetikzlibrary{arrows.meta}            % para las puntas de flechas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%   TABLAS Y ARREGLOS   %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{array}                      % matrices malas pero mejor tabular
+\usepackage{tabularx}                   % ajustar tablas al ancho automaticamente
+\usepackage{multicol}                   % divide columnas
+\usepackage{multirow}                   % fusiona celdas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%
+%   CAJAS Y RESALTADOS  %
+%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{framed}                     % enmarcar
+\usepackage{tcolorbox}                  % cajitas
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   La idea es que solo se cambien los datos de abajo   %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+% datos
+\newcommand{\nroMesa}{X}            % número de la mesa
+\newcommand{\curso}{CursoNombre}    % curso obviamente     
+\newcommand{\semestre}{?}           % número del semestre
+\newcommand{\anho}{xxxx}            % año, 4 dígitos obviamente
+
+\newcommand{\ayudanteUno}   {Señora Ayudante}   % bien obvio lo que hace este
+\newcommand{\ayudanteDos}   {Señor Ayudante}    % y este
+\newcommand{\ayudanteTres}  {Señore Ayudante}   % y este igual
+
+\newcommand{\ayudanteUnoMail}{nombreA.apellidoB@mail.udp.cl}    % correo del compadre 1
+\newcommand{\ayudanteDosMail}{nombreC.apellidoD@mail.udp.cl}    % correo de la comadre 2
+\newcommand{\ayudanteTresMail}{nombeE.apellidoF9@mail.udp.cl}   % correo de le core 3
+
+\newcommand{\ayudantes}{
+    \ayudanteUno (\textbf{\ayudanteUnoMail})\\
+    \ayudanteDos (\textbf{\ayudanteDosMail})
+    %\ayudanteTres (\textbf{\ayudanteTresMail}) % descomentar si es necesario
+    }
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%   La idea es que solo se cambien los datos de arriba  %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% comandos de flojo
+\newcommand{\RR}{\mathbb{R}}    % para escribir el R ese de nro real
+\newcommand{\innerproduct}[2]{\langle #1, #2 \rangle}   % para el prod punto
+\newcommand{\vu}{\Vec{u}}                               % para un vector u
+\newcommand{\vv}{\Vec{v}}                               % para un vector v
+\newcommand{\norm}[1]{||#1||}                           % para la norma de cualquier cosa
+\newcommand{\matindex}[1]{\mbox{\scriptsize#1}}         % no recuerdo este, es robado
+
+
+
+% los cositos de arriba y abajo (la cabeza y las patas)
+\pagestyle{fancy}                               % twice mentioned
+\fancyhead{}                                    % so... no head?
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+\fancyfoot{}                                    % no hay bromas sobre esto
+\fancyfoot[RE,LO]{A. apellidoB, C. apellidoD}   % el footer
+\fancyheadoffset{0.5 cm}                        % linea
+\fancyfootoffset{0.5 cm}                        % otra linea
+
+% el header del centro
+\fancyhead[C]{{\textbf{MESA DE ESTUDIO - \nroMesa}}\vspace{0.15cm}}
+
+% el header izquierdo y derecho
+\fancyhead[RE,LO]{
+\hspace{-0.15cm}\includegraphics[width=2cm]{caea_logo.png} \hfill \curso - S\semestre - \anho\vspace{0.15cm}
+}
+
+% misc
+\justifying     % para justificar
+\raggedbottom   % para que cuando saltes de pag no pasen cosas raras

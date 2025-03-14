@@ -27,5 +27,8 @@ jobs:
           git config --global user.name "GitHub Actions"
           git config --global user.email "actions@github.com"
           git add README.md
+          
+          git diff --staged --quiet && exit 0
+          
           git commit -m "Tabla de templates actualizada"
           git push https://${{ secrets.GH_TOKEN }}@github.com/${{ github.repository }}.git

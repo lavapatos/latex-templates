@@ -1,2 +1,0 @@
-# ayg - Templates Disponibles
-

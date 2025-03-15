@@ -1,2 +1,0 @@
-# edo - Templates Disponibles
-

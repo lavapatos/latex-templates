@@ -1,2 +1,0 @@
-# mecanica - Templates Disponibles
-

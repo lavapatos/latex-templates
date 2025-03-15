@@ -1,2 +1,0 @@
-# cyo - Templates Disponibles
-

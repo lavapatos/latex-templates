@@ -1,8 +1,8 @@
 {
     "course": "redes",
-    "area": "teleco",
+    "area": "eit",
     "institution": "eit",
     "author": "Dylan Barahona",
     "template_type": "lab-report",
-    "file_path": "latex-templates/eit/teleco/redes/templates/template-dylan-redes"
- }
+    "file_path": "eit/redes/templates/template-dylan-redes"
+}

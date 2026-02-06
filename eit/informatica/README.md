@@ -1,2 +1,0 @@
-# informatica - Templates Disponibles
-

@@ -1,2 +1,0 @@
-# quimica - Templates Disponibles
-

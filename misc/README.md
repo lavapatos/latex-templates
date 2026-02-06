@@ -1,2 +1,0 @@
-# misc - Templates Disponibles
-

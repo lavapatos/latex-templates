@@ -1,0 +1,49 @@
+# cacas auxiliares de lateX
+*.aux
+*.log
+*.out
+*.toc
+*.lof
+*.lot
+*.fls
+*.fdb_latexmk
+*.synctex.gz
+*.bbl
+*.blg
+*.nav
+*.snm
+*.vrb
+*.idx
+*.ilg
+*.ind
+*.glo
+*.gls
+*.glg
+*.ist
+*.acn
+*.acr
+*.alg
+*.run.xml
+*.bcf
+
+# cacas de beamer
+*.nav
+*.snm
+*.vrb
+
+# archivos sistema
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# IDEs
+*.swp
+*.swo
+*~
+.vscode/
+.idea/
+*.sublime-*
+
+# otros misc
+# descomentar si me dan ganas de no versionar los pdfs
+# *.pdf

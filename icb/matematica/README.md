@@ -1,2 +1,0 @@
-# matematica - Templates Disponibles
-

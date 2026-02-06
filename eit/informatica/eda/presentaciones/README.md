@@ -1,2 +1,0 @@
-# presentaciones - Templates Disponibles
-

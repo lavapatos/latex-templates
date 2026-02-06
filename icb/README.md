@@ -1,2 +1,0 @@
-# icb - Templates Disponibles
-

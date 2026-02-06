@@ -1,2 +1,0 @@
-# eit - Templates Disponibles
-

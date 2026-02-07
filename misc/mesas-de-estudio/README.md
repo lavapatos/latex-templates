@@ -1,10 +1,5 @@
-# Mesas de Estudio - Templates Disponibles
+# mesas-de-estudio
 
-Este directorio contiene plantillas de Mesas de Estudio.
-
-### Templates Disponibles:
-| Template  |           Autor       |       Tipo        |
-|-----------|-----------------------|-------------------|
-|       og  | Edicson Solar Salinas |   Mesa de Estudio |
-
-Para contribuir, agrega tu template en `templates/` y actualiza este archivo.
+| Template | Autor | Tipo | Modificado | Enlace |
+|----------|-------|------|------------|--------|
+| template-og | Edicson Solar Salinas | mesa | 2025-03-13 | [Ver](templates/template-og) |

@@ -8,6 +8,10 @@ on:
     branches:
       - main
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   update-readme:
     runs-on: ubuntu-latest
@@ -25,21 +29,19 @@ jobs:
       - name: Run script
         run: python .github/scripts/update_readme.py
 
-      - name: Commit changes
-        run: |
-          git config --local user.name "GitHub Actions"
-          git config --local user.email "actions@github.com"
-          git add README.md
-          
-          if git diff --staged --quiet; then
-            echo "No changes detected. Exiting."
-            exit 0
-          fi
-          
-          git commit -m "Tabla de templates actualizada"
-
-      - name: Push changes
-        uses: ad-m/github-push-action@v0.8.0
+      - name: Crear Pull Request del catálogo
+        uses: peter-evans/create-pull-request@v8
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          branch: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Actualizar catálogo de templates"
+          committer: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          author: "github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>"
+          branch: "automation/update-template-catalog"
+          base: main
+          delete-branch: true
+          title: "Actualizar catálogo de templates"
+          body: |
+            Actualiza automáticamente los catálogos generados desde los archivos `metadata.json`.
+          add-paths: |
+            README.md
+            **/README.md

@@ -1,0 +1,377 @@
+\setsansfont{Noto Sans Display}
+\setmonofont{Noto Sans Mono}
+\newfontface\FuenteTitulo{Noto Sans Display ExtraCondensed Black}
+\newfontface\FuenteMeta{Noto Sans Mono}
+
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{normal text}{fg=MariaMoradoOscuro,bg=MariaMarfil}
+\setbeamercolor{background canvas}{bg=MariaMarfil}
+\setbeamercolor{frametitle}{fg=MariaBlanco,bg=MariaMorado}
+\setbeamercolor{framesubtitle}{fg=MariaRosado,bg=MariaMorado}
+\setbeamercolor{pie tema}{fg=MariaMoradoOscuro,bg=MariaLavanda}
+\setbeamercolor{pie numero}{fg=MariaMoradoOscuro,bg=MariaRosado}
+\setbeamercolor{structure}{fg=MariaMorado}
+\setbeamercolor{itemize item}{fg=MariaMorado}
+\setbeamercolor{itemize subitem}{fg=MariaMorado}
+\setbeamerfont{frametitle}{
+  family=\sffamily,
+  series=\bfseries,
+  size=\fontsize{11.2}{12.2}
+}
+\setbeamerfont{framesubtitle}{
+  family=\sffamily,
+  series=\mdseries,
+  size=\fontsize{7.1}{8}
+}
+\setbeamersize{text margin left=0.85cm,text margin right=0.85cm}
+
+\newsavebox{\CajaTituloFrame}
+\newsavebox{\CajaSubtituloFrame}
+\newsavebox{\CajaTemaPortada}
+\newsavebox{\CajaSubtituloPortada}
+\newsavebox{\CajaReferenciaCierre}
+\newsavebox{\CajaNombreAyudante}
+
+\newcommand{\TituloFrameAjustado}{
+  \ifcsname insertframetitle\endcsname
+    \sbox{\CajaTituloFrame}{{\usebeamerfont{frametitle}\insertframetitle}}
+    \ifdim\wd\CajaTituloFrame>7.4cm
+      \resizebox{7.4cm}{!}{\usebox{\CajaTituloFrame}}
+    \else
+      \usebox{\CajaTituloFrame}
+    \fi
+  \fi
+}
+
+\newcommand{\SubtituloFrameAjustado}{
+  \ifcsname insertframesubtitle\endcsname
+    \sbox{\CajaSubtituloFrame}{%
+      {\usebeamercolor[fg]{framesubtitle}%
+       \usebeamerfont{framesubtitle}\insertframesubtitle}}
+    \ifdim\wd\CajaSubtituloFrame>6.5cm
+      \resizebox{6.5cm}{!}{\usebox{\CajaSubtituloFrame}}
+    \else
+      \usebox{\CajaSubtituloFrame}
+    \fi
+  \fi
+}
+
+\newcommand{\TemaPortadaAjustado}{
+  \sbox{\CajaTemaPortada}{{%
+    \FuenteTitulo\fontsize{34}{35}\selectfont\TemaAyudantia}}
+  \ifdim\wd\CajaTemaPortada>12.65cm
+    \resizebox{12.65cm}{!}{\usebox{\CajaTemaPortada}}
+  \else
+    \usebox{\CajaTemaPortada}
+  \fi
+}
+
+\newcommand{\SubtituloPortadaAjustado}{
+  \sbox{\CajaSubtituloPortada}{{%
+    \FuenteMeta\fontsize{11}{12}\selectfont\SubtituloAyudantia}}
+  \ifdim\wd\CajaSubtituloPortada>12.65cm
+    \resizebox{12.65cm}{!}{\usebox{\CajaSubtituloPortada}}
+  \else
+    \usebox{\CajaSubtituloPortada}
+  \fi
+}
+
+\setbeamertemplate{headline}{
+  \leavevmode
+  \begin{beamercolorbox}[
+    wd=\paperwidth,
+    ht=0.50cm,
+    dp=0.18cm,
+    leftskip=0.85cm,
+    rightskip=0.85cm
+  ]{frametitle}
+    \hbox to 14.3cm{%
+      \TituloFrameAjustado
+      \hfil
+      \SubtituloFrameAjustado
+    }
+  \end{beamercolorbox}
+}
+
+\setbeamertemplate{frametitle}{}
+
+\newcommand{\TextoTemaFooter}{
+  \sffamily\fontsize{6}{6.7}\selectfont\TemaFooter
+}
+
+\newcommand{\PieContenido}{
+  \leavevmode
+  \hbox{%
+    \begin{beamercolorbox}[
+      wd=0.82\paperwidth,
+      ht=0.28cm,
+      dp=0.10cm,
+      leftskip=0.85cm
+    ]{pie tema}
+      \TextoTemaFooter
+    \end{beamercolorbox}%
+    \begin{beamercolorbox}[
+      wd=\dimexpr0.18\paperwidth-1.5pt\relax,
+      ht=0.28cm,
+      dp=0.10cm,
+      right,
+      rightskip=0.85cm
+    ]{pie numero}
+      \sffamily\fontsize{6}{6.7}\selectfont
+      \insertframenumber\hspace{0.09cm}de\hspace{0.09cm}%
+      \inserttotalframenumber
+    \end{beamercolorbox}
+  }
+}
+
+\newcommand{\PieSinNumero}{
+  \leavevmode
+  \hbox{%
+    \begin{beamercolorbox}[
+      wd=\dimexpr\paperwidth-1.5pt\relax,
+      ht=0.28cm,
+      dp=0.10cm,
+      leftskip=0.85cm
+    ]{pie tema}
+      \TextoTemaFooter
+    \end{beamercolorbox}
+  }
+}
+
+\makeatletter
+\setbeamertemplate{footline}{%
+  \ifbeamer@noframenumbering
+    \PieSinNumero
+  \else
+    \PieContenido
+  \fi
+}
+
+\define@key{beamerframe}{sinnumero}[true]{
+  \beamer@noframenumberingtrue
+}
+\makeatother
+
+\newcommand{\LineaCorreo}{%
+  \ifdefempty{\CorreoAyudante}{}{%
+    {\FuenteMeta\fontsize{7.3}{8.5}\selectfont
+      \href{mailto:\CorreoAyudante}{%
+        \faEnvelope\hspace{0.12cm}\CorreoAyudante}\par}%
+    \vspace{0.12cm}%
+  }%
+}
+
+\newcommand{\LineaWhatsapp}{%
+  \ifdefempty{\WhatsappAyudante}{}{%
+    {\FuenteMeta\fontsize{7.3}{8.5}\selectfont
+      \ifdefempty{\EnlaceWhatsappAyudante}{%
+        \faWhatsapp\hspace{0.12cm}\WhatsappAyudante
+      }{%
+        \href{https://wa.me/\EnlaceWhatsappAyudante?text=\MensajeWhatsappURL}{%
+          \faWhatsapp\hspace{0.12cm}\WhatsappAyudante}%
+      }\par}%
+    \vspace{0.12cm}%
+  }%
+}
+
+\newcommand{\BloqueAyudante}{
+  \begin{minipage}{13cm}
+    \centering
+    \sbox{\CajaNombreAyudante}{{%
+      \sffamily\bfseries\fontsize{10}{11}\selectfont
+      \addfontfeatures{LetterSpace=2}\NombreAyudante}}
+    \ifdim\wd\CajaNombreAyudante>12.6cm
+      \resizebox{12.6cm}{!}{\usebox{\CajaNombreAyudante}}
+    \else
+      \usebox{\CajaNombreAyudante}
+    \fi
+    \par
+    \vspace{0.16cm}
+    \LineaCorreo
+    \LineaWhatsapp
+  \end{minipage}
+}
+
+\newcommand{\Portada}{
+  {
+  \setbeamercolor{background canvas}{bg=MariaMorado}
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[
+        anchor=north west,
+        align=left,
+        text=MariaLavanda
+      ] at ([xshift=0.90cm,yshift=-0.52cm]current page.north west) {
+        {\FuenteMeta\fontsize{7.2}{8}\selectfont
+          \ContenidoSuperiorIzquierdo}
+      };
+
+      \node[
+        anchor=north,
+        text=MariaBlanco,
+        align=center
+      ] at ([yshift=-0.72cm]current page.north) {
+        {\FuenteMeta\fontsize{7.6}{8.5}\selectfont
+          \addfontfeatures{LetterSpace=7}
+          \NombreRamo}
+      };
+
+      \node[
+        anchor=north east,
+        align=right,
+        text=MariaRosado
+      ] at ([xshift=-0.90cm,yshift=-0.65cm]current page.north east) {
+        {\FuenteMeta\fontsize{7.2}{8}\selectfont
+          \addfontfeatures{LetterSpace=9}\UnidadAyudantias}
+      };
+
+      \node[anchor=center,inner sep=0pt,text=MariaBlanco]
+        at ([yshift=1.46cm]current page.center) {
+          \TemaPortadaAjustado
+        };
+
+      \node[anchor=center,inner sep=0pt,text=MariaCeleste]
+        at ([yshift=0.42cm]current page.center) {
+          \SubtituloPortadaAjustado
+        };
+
+      \node[anchor=center,inner sep=0pt,text=MariaBlanco]
+        at ([yshift=-1.62cm]current page.center) {
+          \BloqueAyudante
+        };
+
+      \node[anchor=south,text=MariaLavanda]
+        at ([yshift=0.68cm]current page.south) {
+          {\FuenteMeta\fontsize{7.4}{8}\selectfont
+            \addfontfeatures{LetterSpace=9}\FechaAyudantia}
+        };
+
+      \FondoMaria
+    \end{tikzpicture}
+  \end{frame}
+  }
+}
+
+\sbox{\CajaReferenciaCierre}{{\FuenteTitulo CUÍDENSE}}
+
+\newcommand{\TextoCierre}[2][MariaMoradoOscuro]{%
+  \resizebox{11.55cm}{!}{%
+    \makebox[\wd\CajaReferenciaCierre][c]{%
+      {\FuenteTitulo\color{#1}#2}%
+    }%
+  }%
+}
+
+\newcommand{\Cita}[2]{
+  {
+  \setbeamercolor{background canvas}{bg=MariaRosado}
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[
+        anchor=center,
+        align=center,
+        text width=12.2cm,
+        text=MariaMoradoOscuro
+      ] at ([yshift=0.35cm]current page.center) {
+        {\sffamily\itshape\fontsize{20}{25}\selectfont
+          ``#1''\par}
+      };
+      \node[
+        anchor=north east,
+        align=right,
+        text width=8.4cm,
+        text=MariaMoradoOscuro
+      ] at ([xshift=-1.55cm,yshift=-1.02cm]current page.east) {
+        {\FuenteMeta\fontsize{8}{9}\selectfont
+          \textemdash\hspace{0.14cm}#2\par}
+      };
+    \end{tikzpicture}
+  \end{frame}
+  }
+}
+
+\newcommand{\Dudas}{
+  {
+  \setbeamercolor{background canvas}{bg=MariaLavanda}
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[text=MariaMorado,text opacity=0.11,rotate=-18]
+        at ([xshift=1.20cm,yshift=-1.05cm]current page.north west)
+        {\FuenteTitulo\fontsize{62}{62}\selectfont ?};
+      \node[text=MariaMorado,text opacity=0.15,rotate=24]
+        at ([xshift=5.10cm,yshift=-0.70cm]current page.north west)
+        {\FuenteTitulo\fontsize{33}{33}\selectfont ¿};
+      \node[text=MariaMorado,text opacity=0.10,rotate=31]
+        at ([xshift=-1.15cm,yshift=-1.25cm]current page.north east)
+        {\FuenteTitulo\fontsize{70}{70}\selectfont ?};
+      \node[text=MariaMorado,text opacity=0.13,rotate=76]
+        at ([xshift=0.85cm,yshift=0cm]current page.west)
+        {\FuenteTitulo\fontsize{43}{43}\selectfont ¿};
+      \node[text=MariaMorado,text opacity=0.12,rotate=-42]
+        at ([xshift=-0.90cm,yshift=0.45cm]current page.east)
+        {\FuenteTitulo\fontsize{51}{51}\selectfont ?};
+      \node[text=MariaMorado,text opacity=0.09,rotate=13]
+        at ([xshift=1.45cm,yshift=1.00cm]current page.south west)
+        {\FuenteTitulo\fontsize{73}{73}\selectfont ?};
+      \node[text=MariaMorado,text opacity=0.14,rotate=-27]
+        at ([xshift=-1.65cm,yshift=0.85cm]current page.south east)
+        {\FuenteTitulo\fontsize{55}{55}\selectfont ¿};
+      \node[text=MariaMorado,text opacity=0.10,rotate=18]
+        at ([xshift=-3.70cm,yshift=0.55cm]current page.south)
+        {\FuenteTitulo\fontsize{30}{30}\selectfont ?};
+      \node[text=MariaMorado,text opacity=0.12,rotate=-65]
+        at ([xshift=3.55cm,yshift=0.62cm]current page.south)
+        {\FuenteTitulo\fontsize{37}{37}\selectfont ?};
+      \node[text=MariaMorado,text opacity=0.09,rotate=48]
+        at ([xshift=3.15cm,yshift=-2.10cm]current page.north west)
+        {\FuenteTitulo\fontsize{25}{25}\selectfont ?};
+      \node[text=MariaMorado,text opacity=0.11,rotate=-16]
+        at ([xshift=-3.00cm,yshift=-2.25cm]current page.north east)
+        {\FuenteTitulo\fontsize{29}{29}\selectfont ¿};
+
+      \node[anchor=center,inner sep=0pt]
+        at (current page.center) {
+          \TextoCierre[MariaMoradoOscuro]{\TextoDudas}
+        };
+    \end{tikzpicture}
+  \end{frame}
+  }
+}
+
+\newcommand{\Redes}{
+  {
+  \setbeamercolor{background canvas}{bg=MariaCeleste}
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[
+        anchor=center,
+        align=center,
+        text width=13.2cm,
+        text=MariaMoradoOscuro
+      ] at ([yshift=0.42cm]current page.center) {
+        {\FuenteTitulo\fontsize{27}{29}\selectfont
+          \TextoRedes\par}
+        \ifdefempty{\ContenidoRedes}{}{%
+          \vspace{0.62cm}
+          {\fontsize{25}{28}\selectfont
+            \ContenidoRedes\par}%
+        }%
+      };
+    \end{tikzpicture}
+  \end{frame}
+  }
+}
+
+\newcommand{\Despedida}{
+  {
+  \setbeamercolor{background canvas}{bg=MariaMorado}
+  \begin{frame}[plain,noframenumbering]
+    \begin{tikzpicture}[remember picture,overlay]
+      \node[anchor=center,inner sep=0pt]
+        at (current page.center) {
+          \TextoCierre[MariaBlanco]{\TextoDespedida}
+        };
+    \end{tikzpicture}
+  \end{frame}
+  }
+}

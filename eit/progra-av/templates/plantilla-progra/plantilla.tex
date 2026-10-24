@@ -1,0 +1,230 @@
+\documentclass[aspectratio=169]{beamer}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[spanish,es-noshorthands]{babel}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{tikz}
+\usetikzlibrary{shapes.geometric, arrows.meta, positioning, fit, calc, backgrounds}
+\usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{colortbl}
+\usepackage{listings}
+\usepackage{qrcode}
+\usepackage{fontawesome5}
+
+\usepackage[default]{lato}
+\usepackage[varqu,varl]{zi4}
+\renewcommand{\familydefault}{\sfdefault}
+
+\title[Corto]{Asignatura}
+\subtitle{Tema}
+\author{Nombre}
+\institute{Universidad}
+\date{Fecha}
+
+\definecolor{colorPrincipal}{RGB}{0,100,166}
+\definecolor{colorAcento}{RGB}{40,185,218}
+\definecolor{grafito}{RGB}{43,45,51}
+\definecolor{grisTexto}{RGB}{110,115,125}
+\definecolor{grisSuave}{RGB}{244,245,247}
+\definecolor{grisLinea}{RGB}{219,222,227}
+\definecolor{grisClaro}{RGB}{232,234,238}
+\definecolor{rojoclaro}{RGB}{255,120,120}
+
+\usetheme{default}
+\usecolortheme{default}
+\setbeamertemplate{navigation symbols}{}
+\setbeamercolor{structure}{fg=colorPrincipal}
+\setbeamercolor{normal text}{fg=grafito}
+\setbeamercolor{background canvas}{bg=white}
+
+\setbeamerfont{title}{size=\LARGE, series=\bfseries}
+\setbeamerfont{frametitle}{size=\Large, series=\bfseries}
+\setbeamerfont{footline}{size=\scriptsize}
+
+\makeatletter
+\setbeamercolor{frametitle}{fg=white, bg=colorPrincipal}
+\setbeamercolor{frametitle accent}{bg=colorAcento}
+\setbeamertemplate{frametitle}{%
+  \nointerlineskip
+  \@tempdima=\textwidth%
+  \advance\@tempdima by\beamer@leftmargin%
+  \advance\@tempdima by\beamer@rightmargin%
+  \begin{beamercolorbox}[wd=\the\@tempdima, sep=0pt]{frametitle}%
+    \vskip0.30cm%
+    \raggedright
+    \leftskip=\beamer@leftmargin
+    \advance\rightskip by\beamer@rightmargin
+    {\usebeamerfont{frametitle}\insertframetitle}%
+    \ifx\insertframesubtitle\@empty\else
+      \\[0.12em]{\normalsize\normalfont\insertframesubtitle}%
+    \fi
+    \par\vskip0.28cm%
+  \end{beamercolorbox}%
+  \nointerlineskip
+  \begin{beamercolorbox}[wd=\the\@tempdima, ht=2pt, dp=0pt, sep=0pt]{frametitle accent}%
+  \end{beamercolorbox}%
+  \vskip0.26cm%
+}
+\makeatother
+
+\setbeamertemplate{footline}{%
+  \hbox to \paperwidth{%
+    \hspace*{0.6cm}%
+    \usebeamerfont{footline}\color{grisTexto}%
+    \textcolor{colorPrincipal}{\textbf{\insertframenumber}}%
+    \hspace{0.55em}\textcolor{grisLinea}{\rule[-0.35ex]{0.7pt}{1.7ex}}\hspace{0.55em}%
+    \insertshorttitle
+    \hfil\insertshortdate\hfil
+    \hspace*{0.6cm}%
+  }%
+  \vskip4pt%
+}
+
+\setbeamertemplate{title page}{%
+\begin{tikzpicture}[remember picture, overlay]
+  \fill[colorPrincipal] (current page.north west) rectangle ([xshift=0.42cm]current page.south west);
+  \fill[colorAcento] ([yshift=3.2cm]current page.south west)
+        rectangle ([xshift=0.42cm, yshift=1.1cm]current page.south west);
+
+  \node[anchor=west, text width=0.72\paperwidth, align=left]
+       at ([xshift=1.5cm, yshift=1.15cm]current page.west) (tit)
+       {\usebeamerfont{title}\color{grafito}\inserttitle};
+
+  \node[anchor=north west, text width=0.72\paperwidth, align=left]
+       at ([yshift=-0.45cm]tit.south west) (sub)
+       {\large\color{colorPrincipal}\insertsubtitle};
+
+  \fill[grisLinea] ([yshift=-0.45cm]sub.south west) rectangle ++(0.62\paperwidth, 0.055);
+
+  \node[anchor=north west, text width=0.72\paperwidth, align=left]
+       at ([yshift=-0.85cm]sub.south west)
+       {\color{grafito}\normalsize\textbf{\insertauthor}\\[0.15em]
+        \color{grisTexto}\small\insertinstitute};
+
+  \node[anchor=south west, text=grisTexto, font=\small]
+       at ([xshift=1.5cm, yshift=0.95cm]current page.south west) {\insertdate};
+
+  \foreach \i/\c in {0/colorPrincipal, 1/colorAcento, 2/colorPrincipal!35}{
+    \fill[\c] ([xshift=-0.9cm-\i*0.75cm, yshift=0.95cm]current page.south east)
+          rectangle ++(-0.55cm, 0.55cm);
+  }
+\end{tikzpicture}%
+}
+
+\AtBeginSection[]{}
+
+\setbeamertemplate{blocks}[rounded][shadow=false]
+\setbeamercolor{block title}{fg=white, bg=colorPrincipal}
+\setbeamercolor{block body}{fg=grafito, bg=grisSuave}
+\setbeamerfont{block title}{series=\bfseries}
+
+\setbeamertemplate{itemize item}[square]
+\setbeamertemplate{itemize subitem}[triangle]
+\setbeamercolor{itemize item}{fg=colorPrincipal}
+\setbeamercolor{itemize subitem}{fg=colorAcento}
+\setbeamercolor{enumerate item}{fg=colorPrincipal}
+\setbeamercolor{enumerate subitem}{fg=colorAcento}
+\renewcommand{\arraystretch}{1.12}
+\arrayrulecolor{grisLinea}
+
+\newcolumntype{L}[1]{>{\raggedright\arraybackslash}p{#1}}
+
+\lstdefinestyle{codigo}{
+    language=Java,
+    basicstyle=\ttfamily\footnotesize\color{grafito},
+    keywordstyle=\color{colorPrincipal}\bfseries,
+    commentstyle=\color{grisTexto}\itshape,
+    numbers=left,
+    numberstyle=\tiny\color{black},
+    numbersep=9pt,
+    backgroundcolor=\color{grisSuave},
+    frame=none,
+    framexleftmargin=7pt,
+    framexrightmargin=5pt,
+    framextopmargin=5pt,
+    framexbottommargin=5pt,
+    xleftmargin=9pt,
+    aboveskip=0.9em,
+    belowskip=0.6em,
+    showstringspaces=false,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true,
+    tabsize=4
+}
+
+\lstdefinestyle{consola}{
+    basicstyle=\ttfamily\scriptsize\color{grisClaro},
+    backgroundcolor=\color{grafito},
+    frame=none,
+    framexleftmargin=7pt,
+    framexrightmargin=5pt,
+    framextopmargin=6pt,
+    framexbottommargin=6pt,
+    xleftmargin=9pt,
+    aboveskip=0.9em,
+    belowskip=0.6em,
+    numbers=none,
+    breaklines=true,
+    columns=fullflexible,
+    keepspaces=true,
+    emph={Exception,error,Error,Traceback,Warning},
+    emphstyle=\color{rojoclaro}\bfseries
+}
+\lstset{style=codigo}
+
+\newcommand{\ojo}{\textcolor{colorPrincipal}{\faLightbulb}\ }
+
+\newcommand{\tecla}[1]{%
+  \tikz[baseline=(k.base)]{%
+    \node[inner xsep=4pt, inner ysep=2pt, rounded corners=2.5pt,
+          fill=grisSuave, draw=grisLinea, line width=0.6pt] (k)
+         {\ttfamily\small #1};}%
+}
+
+\newcommand{\remate}[1]{%
+  \begin{center}
+    \begin{minipage}{0.86\textwidth}
+      \centering\large\color{grafito}#1
+    \end{minipage}
+  \end{center}%
+}
+
+\begin{document}
+
+\begin{frame}[plain]
+  \maketitle
+\end{frame}
+
+\begin{frame}{Título}
+
+\end{frame}
+
+\begin{frame}{Título}
+
+\end{frame}
+
+\begin{frame}[fragile]{Título}
+\begin{lstlisting}[style=codigo]
+public class Lorem {
+    public static void main(String[] args) {
+        // lorem ipsum dolor sit amet
+        String ipsum = "dolor sit amet";
+        System.out.println(ipsum);
+    }
+}
+\end{lstlisting}
+\end{frame}
+
+\begin{frame}{Preguntas}
+    \centering
+    \Huge \textbf{¿Preguntas?}
+\end{frame}
+
+\end{document}

@@ -1,0 +1,29 @@
+% Paleta del preu (colores del logo)
+\definecolor{PreuRosa}{HTML}{E6165D}
+\definecolor{PreuGris}{HTML}{A7ABA9}
+\definecolor{PreuTinta}{HTML}{3A3D3C}
+
+% Colores de uso en las preguntas.
+% En las figuras se usan solo estos nombres, nunca gray!NN ni colores directos,
+% para que la misma fuente sirva para las dos ediciones.
+%   relleno       superficies claras (fondos de figuras, sectores secundarios)
+%   rellenomedio  superficies intermedias (cajas, sectores, regalos, bolitas)
+%   rellenofuerte superficies destacadas (barras, sector principal)
+%   tinta         trazos oscuros que no son negro puro
+\ifedicioncolor
+  \colorlet{relleno}{PreuGris!30}
+  \colorlet{rellenomedio}{PreuRosa!30}
+  \colorlet{rellenofuerte}{PreuRosa!70}
+  \colorlet{tinta}{PreuTinta}
+  \colorlet{acento}{PreuRosa}
+\else
+  \colorlet{relleno}{gray!20}
+  \colorlet{rellenomedio}{gray!40}
+  \colorlet{rellenofuerte}{gray!65}
+  \colorlet{tinta}{black!80}
+  \colorlet{acento}{black}
+\fi
+
+% Texto que cambia según la edición, para enunciados que nombran un color.
+% Ejemplo: bolitas \segunedicion{grises}{rosadas} y blancas.
+\newcommand{\segunedicion}[2]{\ifedicioncolor#2\else#1\fi}

@@ -1,0 +1,25 @@
+\documentclass{article}
+
+\input{settings/_packages}
+\input{settings/_datos}
+\input{settings/_colores}
+\input{settings/_estilo}
+
+\begin{document}
+
+\input{portada}
+\newpage
+\input{instrucciones}
+\newpage
+
+% Un archivo por eje temático. Las preguntas corren seguidas, sin títulos de eje.
+\begin{enumerate}
+    \input{ejes/01_eje}
+    \input{ejes/02_eje}
+    \input{ejes/03_eje}
+    \input{ejes/04_eje}
+\end{enumerate}
+
+\FinDelEnsayo
+
+\end{document}

@@ -7,6 +7,7 @@ Usa estos valores en el campo `template_type` del `metadata.json`.
 | Afiche TICs | `afiche-tics` |
 | Ayudantía | `ayudantia` |
 | Control | `control` |
+| Ensayo | `ensayo` |
 | Guía de apoyo | `guia-apoyo` |
 | Informe de laboratorio | `lab-report` |
 | Mesa de estudio | `mesa` |

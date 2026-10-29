@@ -1,0 +1,26 @@
+% Eje 4 (ejemplo: Probabilidad y estadística)
+
+    \item En el siguiente gráfico se presenta la cantidad de libros que leyeron los estudiantes de un curso durante las vacaciones.
+        \begin{center}
+            \begin{tikzpicture}
+                \foreach \y in {2, 4, 6, 8, 10} {
+                    \draw[relleno] (0, \y*0.3) -- (5, \y*0.3);
+                    \node[left] at (0, \y*0.3) {$\y$};
+                }
+                \foreach \x/\f in {0/4, 1/9, 2/6, 3/3} {
+                    \fill[rellenofuerte] (0.6 + 1.1*\x, 0) rectangle (1.2 + 1.1*\x, \f*0.3);
+                    \node[below] at (0.9 + 1.1*\x, 0) {$\x$};
+                }
+                \draw[thick] (0, 0) -- (5, 0) (0, 0) -- (0, 3.3);
+                \node[below] at (2.5, -0.5) {Cantidad de libros leídos};
+                \node[rotate=90, above] at (-0.5, 1.6) {Cantidad de estudiantes};
+            \end{tikzpicture}
+        \end{center}
+
+    ¿Cuál es la moda de la cantidad de libros leídos?
+    \begin{enumerate}
+        \item $0$
+        \item $1$ % <- correcta
+        \item $2$
+        \item $9$
+    \end{enumerate}

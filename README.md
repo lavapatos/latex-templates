@@ -7,13 +7,14 @@ Colección de templates LaTeX para la comunidad universitaria.
 
 | Curso | Autor | Tipo | Modificado | Enlace |
 |-------|-------|------|------------|--------|
-| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-maria) |
-| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-generico) |
+| progra-av | Pedro Morales | ayudantia | 2026-10-21 | [Ver](eit/progra-av/templates/plantilla-progra) |
+| redes | Dylan Barahona | lab-report | 2026-02-06 | [Ver](eit/redes/templates/template-dylan-redes) |
+| mesas-de-estudio | Edicson Solar Salinas | mesa | 2025-03-13 | [Ver](misc/mesas-de-estudio/templates/template-og) |
+| preuportaleanos | Edicson Solar Salinas | ensayo | 2026-10-25 | [Ver](misc/preuportaleanos/templates/template-ensayo-paes) |
 | ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-huaso) |
 | ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-miki) |
-| mesas-de-estudio | Edicson Solar Salinas | mesa | 2025-03-13 | [Ver](misc/mesas-de-estudio/templates/template-og) |
-| redes | Dylan Barahona | lab-report | 2026-02-06 | [Ver](eit/redes/templates/template-dylan-redes) |
-| progra-av | Pedro Morales | ayudantia | 2026-10-21 | [Ver](eit/progra-av/templates/plantilla-progra) |
+| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-maria) |
+| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-generico) |
 <!-- TABLE_END -->
 
 ---

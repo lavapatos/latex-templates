@@ -4,290 +4,293 @@ import glob
 import subprocess
 
 
-# obtener fecha del ultimo commit
-def obtener_fecha_ultimo_commit(ruta_carpeta_template):
-    
-    # buscar archivos .tex en la carpeta del template
-    patron_busqueda = os.path.join(ruta_carpeta_template, "*.tex")
-    archivos_tex = glob.glob(patron_busqueda)
-    
-    # si no hay archivos .tex, retornar N/A
-    if len(archivos_tex) == 0:
-        return "N/A"
-    
-    # tomar el primer archivo .tex encontrado
-    archivo_tex = archivos_tex[0]
-    
-    # construir comando git para obtener fecha
-    # %cs = fecha corta ISO (yyy-mm-dd)
-    comando_git = [
-        "git",
-        "log",
-        "-1",
-        "--format=%cs",
-        "--",
-        archivo_tex
-    ]
-    
-    # ejecutar comando git
+# ejecutar un comando git y devolver su salida (None si falla)
+def ejecutar_git(argumentos):
+
+    comando = ["git", "-c", "core.quotePath=false"] + argumentos
+
     try:
         resultado = subprocess.run(
-            comando_git,
+            comando,
             capture_output=True,
             text=True,
+            encoding="utf-8",
             check=True
         )
-        fecha = resultado.stdout.strip()
-        
-        # si no hay fecha porque hay archivo no commiteado, retornar N/A
-        if fecha == "":
-            return "N/A"
-        
-        return fecha
-        
+        return resultado.stdout
+
     except subprocess.CalledProcessError:
-        return "N/A"
+        return None
     except FileNotFoundError:
-        return "N/A"
+        return None
+
+
+# convertir el texto de un metadata.json en diccionario (None si no sirve)
+def parsear_metadata(texto):
+
+    try:
+        contenido = json.loads(texto.lstrip("﻿"))
+    except (ValueError, AttributeError):
+        return None
+
+    if not isinstance(contenido, dict):
+        return None
+
+    return contenido
 
 
 # leer un archivo metadata.json
 def leer_metadata(ruta_archivo_metadata):
-    
-    # abrir y leer el archivo
+
     with open(ruta_archivo_metadata, "r", encoding="utf-8-sig") as archivo:
-        contenido = json.load(archivo)
-    
-    # verificar que sea un diccionario
-    if not isinstance(contenido, dict):
+        return parsear_metadata(archivo.read())
+
+
+# buscar el commit que agrego el metadata.json por primera vez
+# --follow sigue los renombres de carpeta y --diff-filter=A deja solo el commit
+# que creo el archivo, asi la fecha y el autor no cambian aunque alguien edite
+# el template despues
+def obtener_primer_aporte(ruta_metadata):
+
+    salida = ejecutar_git([
+        "log",
+        "--follow",
+        "--diff-filter=A",
+        "--format=commit %H %as",  # %as = fecha corta (yyyy-mm-dd) del autor del commit
+        "--name-only",
+        "--",
+        ruta_metadata
+    ])
+
+    # sin salida: el archivo todavia no esta commiteado
+    if not salida:
         return None
-    
-    return contenido
+
+    # la salida viene asi, del commit mas nuevo al mas viejo:
+    # commit <hash> <fecha>
+    #
+    # <ruta del archivo en ese commit>
+    commits = []
+    for linea in salida.splitlines():
+        linea = linea.strip()
+
+        if linea.startswith("commit "):
+            _, hash_commit, fecha = linea.split(" ", 2)
+            commits.append({"hash": hash_commit, "fecha": fecha, "ruta": None})
+
+        elif linea != "" and len(commits) > 0 and commits[-1]["ruta"] is None:
+            commits[-1]["ruta"] = linea
+
+    if len(commits) == 0:
+        return None
+
+    # el ultimo de la lista es el mas viejo, o sea, el aporte original
+    primero = commits[-1]
+    ruta_original = primero["ruta"] if primero["ruta"] else ruta_metadata
+
+    # leer el metadata.json tal como venia en ese primer commit
+    texto_original = ejecutar_git(["show", primero["hash"] + ":" + ruta_original])
+    metadata_original = parsear_metadata(texto_original) if texto_original else None
+
+    return {
+        "fecha": primero["fecha"],
+        "metadata": metadata_original
+    }
 
 
-# construir fila de la tabla
-def construir_fila_tabla(curso, autor, tipo, fecha, ruta):
-    
-    # formato: | curso | autor | tipo | fecha | enlace |
-    enlace = f"[Ver]({ruta})"
-    fila = f"| {curso} | {autor} | {tipo} | {fecha} | {enlace} |"
-    
+# escapar texto para que no rompa una celda de tabla markdown
+def celda(texto):
+
+    return str(texto).replace("|", "\\|").strip()
+
+
+# construir fila de la tabla principal
+def construir_fila_tabla(template):
+
+    # formato: | nombre | curso | autor | tipo | agregado | enlace |
+    enlace = f"[Ver]({template['ruta']})"
+    fila = (
+        f"| {celda(template['nombre'])} | {celda(template['curso'])} "
+        f"| {celda(template['autor'])} | {celda(template['tipo'])} "
+        f"| {template['fecha']} | {enlace} |"
+    )
+
     return fila
 
 
-# construir fila para readme de curso (mas simple)
-def construir_fila_tabla_curso(nombre_template, autor, tipo, fecha):
-    
+# construir fila para readme de curso (sin columna curso)
+def construir_fila_tabla_curso(template):
+
     # ruta relativa desde el readme del curso
-    enlace = f"[Ver](templates/{nombre_template})"
-    fila = f"| {nombre_template} | {autor} | {tipo} | {fecha} | {enlace} |"
-    
+    enlace = f"[Ver](templates/{template['carpeta']})"
+    fila = (
+        f"| {celda(template['nombre'])} | {celda(template['autor'])} "
+        f"| {celda(template['tipo'])} | {template['fecha']} | {enlace} |"
+    )
+
     return fila
 
 
 # generar tabla markdown completa
 def generar_tabla_markdown(lista_templates):
-    
-    # header de la tabla
+
     lineas = []
     lineas.append("## Templates")
     lineas.append("")
-    lineas.append("| Curso | Autor | Tipo | Modificado | Enlace |")
-    lineas.append("|-------|-------|------|------------|--------|")
-    
-    # agregar cada template como fila
+    lineas.append("| Nombre | Curso | Autor | Tipo | Agregado | Enlace |")
+    lineas.append("|--------|-------|-------|------|----------|--------|")
+
     for template in lista_templates:
-        fila = construir_fila_tabla(
-            template["curso"],
-            template["autor"],
-            template["tipo"],
-            template["fecha"],
-            template["ruta"]
-        )
-        lineas.append(fila)
-    
-    # unir todas las lineas con salto de linea
-    tabla_completa = "\n".join(lineas)
-    
-    return tabla_completa
+        lineas.append(construir_fila_tabla(template))
+
+    return "\n".join(lineas)
 
 
 # generar readme para un curso especifico
 def generar_readme_curso(nombre_curso, templates_del_curso):
-    
+
     lineas = []
     lineas.append(f"# {nombre_curso}")
     lineas.append("")
-    lineas.append("| Template | Autor | Tipo | Modificado | Enlace |")
-    lineas.append("|----------|-------|------|------------|--------|")
-    
+    lineas.append("| Nombre | Autor | Tipo | Agregado | Enlace |")
+    lineas.append("|--------|-------|------|----------|--------|")
+
     for template in templates_del_curso:
-        fila = construir_fila_tabla_curso(
-            template["nombre_template"],
-            template["autor"],
-            template["tipo"],
-            template["fecha"]
-        )
-        lineas.append(fila)
-    
-    contenido = "\n".join(lineas)
-    return contenido
+        lineas.append(construir_fila_tabla_curso(template))
+
+    return "\n".join(lineas) + "\n"
 
 
 # actualizar el readme principal
 def actualizar_readme(tabla_nueva):
-    
-    # leer contenido actual del readme
+
     with open("README.md", "r", encoding="utf-8") as archivo:
         contenido_actual = archivo.read()
-    
-    # buscar marcadores de inicio y fin
+
     marcador_inicio = "<!-- TABLE_START -->"
     marcador_fin = "<!-- TABLE_END -->"
-    
+
     posicion_inicio = contenido_actual.find(marcador_inicio)
-    posicion_fin = contenido_actual.find(marcador_fin) + len(marcador_fin)
-    
-    # armar el nuevo contenido
+    posicion_fin = contenido_actual.find(marcador_fin)
+
+    # sin marcadores no se toca nada, para no romper el README
+    if posicion_inicio == -1 or posicion_fin == -1 or posicion_fin < posicion_inicio:
+        raise SystemExit("README.md no tiene los marcadores TABLE_START / TABLE_END")
+
     parte_antes = contenido_actual[:posicion_inicio]
-    parte_despues = contenido_actual[posicion_fin:]
-    
+    parte_despues = contenido_actual[posicion_fin + len(marcador_fin):]
+
     contenido_nuevo = parte_antes + marcador_inicio + "\n" + tabla_nueva + "\n" + marcador_fin + parte_despues
-    
-    # escribir nuevo contenido
+
     with open("README.md", "w", encoding="utf-8") as archivo:
         archivo.write(contenido_nuevo)
 
 
 # generar readmes por curso
 def generar_readmes_por_curso(lista_templates):
-    
-    # agrupar templates por carpeta de curso
-    # la carpeta de curso es el directorio padre de "templates/"
+
+    # agrupar templates por carpeta de curso (el directorio padre de "templates/")
+    # ejemplo: eit/redes/templates/template-dylan-redes -> eit/redes
     cursos = {}
-    
+
     for template in lista_templates:
-        ruta = template["ruta"]
-        
-        # buscar donde esta "templates/" en la ruta
-        # ejemplo: eit/redes/templates/template-dylan-redes
-        # carpeta_curso seria: eit/redes
-        partes = ruta.split("/")
-        
-        # encontrar el indice de "templates"
+        partes = template["ruta"].split("/")
+
         if "templates" not in partes:
             continue
-        
+
         indice_templates = partes.index("templates")
-        
-        # la carpeta del curso es todo antes de "templates"
         carpeta_curso = "/".join(partes[:indice_templates])
-        
-        # el nombre del template es lo que sigue despues de "templates"
-        nombre_template = partes[indice_templates + 1] if indice_templates + 1 < len(partes) else "unknown"
-        
-        # obtener nombre legible del curso (ultima parte de la ruta del curso)
         nombre_curso = partes[indice_templates - 1] if indice_templates > 0 else "misc"
-        
-        # agregar al diccionario de cursos
+
         if carpeta_curso not in cursos:
-            cursos[carpeta_curso] = {
-                "nombre": nombre_curso,
-                "templates": []
-            }
-        
-        cursos[carpeta_curso]["templates"].append({
-            "nombre_template": nombre_template,
-            "autor": template["autor"],
-            "tipo": template["tipo"],
-            "fecha": template["fecha"]
-        })
-    
-    # generar readme para cada curso
+            cursos[carpeta_curso] = {"nombre": nombre_curso, "templates": []}
+
+        cursos[carpeta_curso]["templates"].append(template)
+
     for carpeta_curso, info_curso in cursos.items():
-        
-        contenido_readme = generar_readme_curso(
-            info_curso["nombre"],
-            info_curso["templates"]
-        )
-        
         ruta_readme = os.path.join(carpeta_curso, "README.md")
-        
         print(f"generando {ruta_readme}")
-        
+
         with open(ruta_readme, "w", encoding="utf-8") as archivo:
-            archivo.write(contenido_readme)
+            archivo.write(generar_readme_curso(info_curso["nombre"], info_curso["templates"]))
 
 
-# main porque si
+# armar la info de un template a partir de su metadata.json
+def procesar_template(ruta_metadata):
+
+    ruta_metadata = ruta_metadata.replace("\\", "/")  # por si windows
+
+    try:
+        metadata = leer_metadata(ruta_metadata)
+    except OSError as error:
+        print(f"error de lectura de metadata: {error}")
+        return None
+
+    if metadata is None:
+        print("saltando porque metadata invalida")
+        return None
+
+    carpeta_template = os.path.dirname(ruta_metadata)
+    carpeta = os.path.basename(carpeta_template)
+
+    # fecha y autor salen del primer aporte, no de la version actual
+    aporte = obtener_primer_aporte(ruta_metadata)
+    metadata_original = aporte["metadata"] if aporte and aporte["metadata"] else {}
+
+    autor_actual = str(metadata.get("author", "")).strip()
+    autor_original = str(metadata_original.get("author", "")).strip()
+    autor = autor_original or autor_actual or "Anonimo"
+
+    if autor_original and autor_actual and autor_original != autor_actual:
+        print(f"aviso: el author cambio a '{autor_actual}', se mantiene '{autor_original}'")
+
+    # el nombre si se puede cambiar despues, si no hay se usa la carpeta
+    nombre = str(metadata.get("name", "")).strip() or carpeta
+
+    return {
+        "nombre": nombre,
+        "carpeta": carpeta,
+        "curso": str(metadata.get("course", "N/A")),
+        "autor": autor,
+        "tipo": str(metadata.get("template_type", "N/A")),
+        "fecha": aporte["fecha"] if aporte else "N/A",
+        "ruta": carpeta_template
+    }
+
+
 def main():
-    
+
     # buscar todos los archivos metadata.json en el repositorio
-    patron_busqueda = os.path.join("**", "metadata.json")
-    archivos_metadata = glob.glob(patron_busqueda, recursive=True)
-    
+    archivos_metadata = sorted(glob.glob(os.path.join("**", "metadata.json"), recursive=True))
     print(f"encontrados {len(archivos_metadata)} archivos metadata.json")
-    
-    # lista para guardar info de cada template
+
     lista_templates = []
-    
-    # procesar cada archivo metadata.json
+
     for ruta_metadata in archivos_metadata:
-        
         print(f"procesando: {ruta_metadata}")
-        
-        # leer la metadata
-        try:
-            metadata = leer_metadata(ruta_metadata)
-        except Exception as error:
-            print(f"error de lectura de metadata: {error}")
+        template = procesar_template(ruta_metadata)
+
+        if template is None:
             continue
-        
-        # si no se pudo leer, saltar
-        if metadata is None:
-            print(f"saltando porque metadata invalida")
-            continue
-        
-        # obtener la carpeta donde esta el template
-        carpeta_template = os.path.dirname(ruta_metadata)
-        carpeta_template = carpeta_template.replace("\\", "/")  # por si windows
-        
-        # obtener fecha del ultimo commit
-        fecha_modificacion = obtener_fecha_ultimo_commit(carpeta_template)
-        print(f"fecha ultima modificacion: {fecha_modificacion}")
-        
-        # extraer datos del metadata
-        curso = metadata.get("course", "N/A")
-        autor = metadata.get("author", "Anonimo")
-        tipo = metadata.get("template_type", "N/A")
-        
-        # agregar a la lista
-        info_template = {
-            "curso": curso,
-            "autor": autor,
-            "tipo": tipo,
-            "fecha": fecha_modificacion,
-            "ruta": carpeta_template
-        }
-        lista_templates.append(info_template)
-        print(f"ok: {curso} por {autor}")
-    
-    # generar la tabla markdown principal
+
+        lista_templates.append(template)
+        print(f"ok: {template['nombre']} ({template['curso']}) por {template['autor']}, agregado {template['fecha']}")
+
+    # orden estable: por curso y luego por nombre, para que la tabla no cambie sola
+    lista_templates.sort(key=lambda t: (t["curso"].lower(), t["nombre"].lower(), t["ruta"]))
+
     print("")
-    print("generando tabla markdown principal")
-    tabla = generar_tabla_markdown(lista_templates)
-    
-    # actualizar el README principal
     print("actualizando README.md")
-    actualizar_readme(tabla)
-    
-    # generar READMEs por curso
+    actualizar_readme(generar_tabla_markdown(lista_templates))
+
     print("")
     print("generando READMEs por curso")
     generar_readmes_por_curso(lista_templates)
-    
+
     print("")
     print("listo")
 
 
-main()
+if __name__ == "__main__":
+    main()

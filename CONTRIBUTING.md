@@ -31,6 +31,7 @@ Tu carpeta debe contener **mínimo**:
 
 ```json
 {
+    "name": "Nombre del template",
     "course": "nombre-del-curso",
     "area": "eit",
     "institution": "eit",
@@ -44,6 +45,7 @@ Tu carpeta debe contener **mínimo**:
 
 | Campo | Descripción | Ejemplo |
 |-------|-------------|---------|
+| `name` | Nombre visible del template (opcional, por defecto el nombre de la carpeta) | `"Informe de Redes"` |
 | `course` | Nombre del curso (ver CURSOS.md) | `"redes"`, `"eda"` |
 | `area` | Área principal | `"eit"`, `"misc"` |
 | `institution` | Institución | `"eit"`, `"caea"` |
@@ -51,10 +53,15 @@ Tu carpeta debe contener **mínimo**:
 | `template_type` | Tipo de documento (ver TIPOS.md) | `"lab-report"`, `"presentation"`, `"mesa"` |
 | `file_path` | Ruta relativa al template | `"eit/redes/templates/mi-template"` |
 
+El `author` y la fecha que aparecen en la tabla se toman del commit que agregó
+el `metadata.json` por primera vez. Si después otra persona mejora el template o
+le cambia el `name`, se sigue mostrando a quien lo aportó y la fecha en que lo
+agregó.
+
 ### 4. Convenciones de nombres
 
-- **Carpetas:** usar guiones → `mi-template/`
-- **Archivos:** usar guión bajo → `main_template.tex`
+- **Carpetas:** con guiones, por ejemplo `mi-template/`
+- **Archivos:** sin espacios ni tildes, por ejemplo `main.tex` o `settings/_colores.tex`
 - **Cursos:** usar abreviación de [CURSOS.md](CURSOS.md)
 
 ### 5. Hacer el Pull Request
@@ -66,7 +73,7 @@ Tu carpeta debe contener **mínimo**:
 5. Push: `git push origin agregar-template-[nombre]`
 6. Abre un pull request
 
-Las pull requests son revisadas por @lavapatos (Edicson).
+Las pull requests son revisadas por [@lavapatos](https://github.com/lavapatos) (Edicson).
 
 ## La tabla se actualiza sola
 

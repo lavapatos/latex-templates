@@ -118,3 +118,5 @@ Usa estas abreviaciones al crear carpetas y en `metadata.json`.
 | Categoría | Abreviación |
 |-----------|-------------|
 | Mesas de Estudio | `mesas-de-estudio` |
+| Ayudantías FIC | `ayudantias-fic` |
+| Preuportaleanos | `preuportaleanos` |

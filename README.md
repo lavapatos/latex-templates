@@ -5,17 +5,17 @@ Colección de templates LaTeX para la comunidad universitaria.
 <!-- TABLE_START -->
 ## Templates
 
-| Curso | Autor | Tipo | Modificado | Enlace |
-|-------|-------|------|------------|--------|
-| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-maria) |
-| ayudantias-fic | Fernando Cabrera Legue | guia-apoyo | 2026-10-29 | [Ver](misc/ayudantias-fic/templates/template-afic-guia-generico) |
-| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-miki) |
-| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-generico) |
-| ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-huaso) |
-| mesas-de-estudio | Edicson Solar Salinas | mesa | 2025-03-13 | [Ver](misc/mesas-de-estudio/templates/template-og) |
-| preuportaleanos | Edicson Solar Salinas | ensayo | 2026-10-25 | [Ver](misc/preuportaleanos/templates/template-ensayo-paes) |
-| redes | Dylan Barahona | lab-report | 2026-02-06 | [Ver](eit/redes/templates/template-dylan-redes) |
-| progra-av | Pedro Morales | ayudantia | 2026-10-21 | [Ver](eit/progra-av/templates/plantilla-progra) |
+| Nombre | Curso | Autor | Tipo | Agregado | Enlace |
+|--------|-------|-------|------|----------|--------|
+| template-afic-generico | ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-generico) |
+| template-afic-guia-generico | ayudantias-fic | Fernando Cabrera Legue | guia-apoyo | 2026-10-29 | [Ver](misc/ayudantias-fic/templates/template-afic-guia-generico) |
+| template-afic-huaso | ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-huaso) |
+| template-afic-maria | ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-maria) |
+| template-afic-miki | ayudantias-fic | Edicson Solar Salinas | presentation | 2026-09-22 | [Ver](misc/ayudantias-fic/templates/template-afic-miki) |
+| template-og | mesas-de-estudio | Edicson Solar Salinas | mesa | 2025-03-13 | [Ver](misc/mesas-de-estudio/templates/template-og) |
+| template-ensayo-paes | preuportaleanos | Edicson Solar Salinas | ensayo | 2026-10-25 | [Ver](misc/preuportaleanos/templates/template-ensayo-paes) |
+| plantilla-progra | progra-av | Pedro Morales | ayudantia | 2026-10-21 | [Ver](eit/progra-av/templates/plantilla-progra) |
+| template-dylan-redes | redes | Dylan Barahona | lab-report | 2025-03-13 | [Ver](eit/redes/templates/template-dylan-redes) |
 <!-- TABLE_END -->
 
 ---
